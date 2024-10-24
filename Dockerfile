@@ -1,7 +1,7 @@
 FROM python:3.8-slim
 
-# Install git
-RUN apt-get update && apt-get install -y git
+# Install git and MySQL client
+RUN apt-get update && apt-get install -y git default-libmysqlclient-dev
 
 WORKDIR /code
 

@@ -13,4 +13,4 @@ cp -r $TEMP_DIR/app.py $TEMP_DIR/templates /code/
 rm -rf $TEMP_DIR
 
 # Start the Flask app
-exec flask run --host=0.0.0.0 --port=5000
+exec flask run --host=0.0.0.0 --port=5000 --app app:app

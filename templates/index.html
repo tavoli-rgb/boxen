@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Page</title>
+    <title>Regalverwaltung</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,6 +13,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            flex-direction: column;
         }
         .container {
             background-color: #fff;
@@ -20,6 +21,8 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            width: 80%;
+            max-width: 800px;
         }
         h1 {
             color: #333;
@@ -27,12 +30,50 @@
         p {
             color: #666;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the Test Page</h1>
-        <p>This is a simple HTML page for testing purposes.</p>
+        <h1>Regalverwaltung</h1>
+        <form action="/assign" method="post">
+            <label for="project_number">Project Number:</label>
+            <input type="text" id="project_number" name="project_number" required>
+            <button type="submit">Assign</button>
+        </form>
+        <h2>Shelves</h2>
+        <table>
+            <tr>
+                <th>Level</th>
+                <th>Position</th>
+                <th>Project Number</th>
+                <th>Action</th>
+            </tr>
+            {% for shelf in shelves %}
+            <tr>
+                <td>{{ shelf.level }}</td>
+                <td>{{ shelf.position }}</td>
+                <td>{{ shelf.project_number or 'Empty' }}</td>
+                <td>
+                    {% if shelf.project_number %}
+                    <a href="/remove/{{ shelf.box_id }}">Remove</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </body>
 </html>
