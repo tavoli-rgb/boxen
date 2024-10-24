@@ -6,10 +6,10 @@ app = Flask(__name__)
 
 # Configure MySQL connection
 db_config = {
-    'user': 'root',
-    'password': 'example',
-    'host': 'db',
-    'database': 'regalverwaltung'
+    'user': 'your_user',
+    'password': 'your_password',
+    'host': 'localhost',
+    'database': 'your_database'
 }
 
 def get_db_connection():
@@ -23,7 +23,7 @@ def index():
         SELECT shelves.id AS shelf_id, shelves.level, shelves.position, boxes.id AS box_id, boxes.project_number
         FROM shelves
         LEFT JOIN boxes ON shelves.id = boxes.shelf_id
-        ORDER BY shelves.level, shelves.position
+        ORDER BY shelves.level DESC, shelves.position DESC
     ''')
     shelves = cursor.fetchall()
     cursor.close()
@@ -54,8 +54,9 @@ def remove(box_id):
     conn.close()
     return redirect(url_for('index'))
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)    project_number = request.args.get('project_number')
+@app.route('/search', methods=['GET'])
+def search():
+    project_number = request.args.get('project_number')
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute('''
@@ -68,8 +69,7 @@ if __name__ == '__main__':
     shelves = cursor.fetchall()
     cursor.close()
     conn.close()
-    return render_template('index.html', shelves=shelves)
-
+    return render_template('index.html', shelves=shelves, search_project_number=project_number)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
