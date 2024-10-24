@@ -54,5 +54,23 @@ def remove(box_id):
     conn.close()
     return redirect(url_for('index'))
 
+@app.route('/search', methods=['GET'])
+def search():
+    project_number = request.args.get('project_number')
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('''
+        SELECT shelves.id AS shelf_id, shelves.level, shelves.position, boxes.id AS box_id, boxes.project_number
+        FROM shelves
+        LEFT JOIN boxes ON shelves.id = boxes.shelf_id
+        WHERE boxes.project_number = %s
+        ORDER BY shelves.level DESC, shelves.position DESC
+    ''', (project_number,))
+    shelves = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template('index.html', shelves=shelves)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
