@@ -45,7 +45,21 @@ def search():
     shelves = cursor.fetchall()
     cursor.close()
     conn.close()
-    return render_template('index.html', shelves=shelves, search_project_number=project_number)
+
+    # Check if a box was found
+    found_box = None
+    for shelf in shelves:
+        if shelf['project_number'] == project_number:
+            found_box = shelf
+            break
+
+    message = None
+    if found_box:
+        message = f"Kiste gefunden: Regalebene {found_box['level']}, Fach {found_box['position']}"
+    else:
+        message = "Keine Kiste gefunden"
+
+    return render_template('index.html', shelves=shelves, search_project_number=project_number, message=message)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
