@@ -15,52 +15,86 @@
             margin: 0;
             flex-direction: column;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 50px;
-            height: 50px;
+            width: 90%;
+            max-width: 1200px;
+            position: relative;
         }
-        th {
-            background-color: #f2f2f2;
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        .search-bar input {
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .grid-container {
+            display: flex;
+            align-items: center;
+        }
+        .side-bar {
+            width: 30px;
+            background-color: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            padding: 10px;
+            font-weight: bold;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 10px;
+            margin: 0 10px;
         }
         .box {
             background-color: #e0f7fa;
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            border-radius: 4px;
         }
-        .highlight {
+        .box.highlight {
             background-color: #ffcccc;
+        }
+        .box span {
+            font-size: 14px;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <h1>Regalübersicht</h1>
-    <form action="{{ url_for('search') }}" method="get">
-        <label for="project_number">Projekt Nummer:</label>
-        <input type="text" id="project_number" name="project_number">
-        <button type="submit">Suchen</button>
-    </form>
-    <table>
-        <thead>
-            <tr>
-                <th>Ebene</th>
-                <th>Fach</th>
-                <th>Box</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for shelf in shelves %}
-                <tr>
-                    <td>{{ shelf.level }}</td>
-                    <td>{{ shelf.position }}</td>
-                    <td class="box {% if shelf.project_number == search_project_number %}highlight{% endif %}">{{ shelf.box_id }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <div class="search-bar">
+            <form action="{{ url_for('search') }}" method="get">
+                <input type="text" id="search" name="project_number" placeholder="Projektnummer eingeben...">
+                <button type="submit">Suchen</button>
+            </form>
+        </div>
+        <div class="grid-container">
+            <div class="side-bar">Ebene 5</div>
+            <div class="grid">
+                {% for shelf in shelves %}
+                    <div class="box {% if shelf.project_number == search_project_number %}highlight{% endif %}" 
+                         style="grid-column: {{ 11 - shelf.position }}; grid-row: {{ 6 - shelf.level }};">
+                        <span>{{ shelf.box_id }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="side-bar">Ebene 1</div>
+        </div>
+    </div>
 </body>
 </html>
