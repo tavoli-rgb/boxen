@@ -54,9 +54,8 @@ def remove(box_id):
     conn.close()
     return redirect(url_for('index'))
 
-@app.route('/search', methods=['GET'])
-def search():
-    project_number = request.args.get('project_number')
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)    project_number = request.args.get('project_number')
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute('''
