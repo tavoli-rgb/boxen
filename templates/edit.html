@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eintrag bearbeiten</title>
+    <style>
+        /* Füge hier deine CSS-Stile hinzu */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Eintrag bearbeiten</h1>
+        <form action="{{ url_for('edit', box_id=box.id) }}" method="post">
+            <input type="text" name="project_number" value="{{ box.project_number }}" required>
+            <button type="submit">Speichern</button>
+            <button type="submit" name="delete">Löschen</button>
+        </form>
+    </div>
+</body>
+</html>
