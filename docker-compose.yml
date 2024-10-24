@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    ports:
+      - 3310:3306
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 8090:80
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: example
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/code
+    ports:
+      - 5010:5000
+    depends_on:
+      - db
+    environment:
+      REPO_URL: https://github.com/tavoli-rgb/boxen.git
+      REPO_BRANCH: main
+    entrypoint: /code/entrypoint.sh
