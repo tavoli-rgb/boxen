@@ -26,7 +26,7 @@ services:
       args:
         REPO_URL: https://github.com/tavoli-rgb/boxen.git
     volumes:
-      - ./web:/code
+      - .:/code
     ports:
       - 5010:5000
     depends_on:
