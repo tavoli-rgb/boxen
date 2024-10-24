@@ -2,7 +2,8 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Kistenverwaltung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regalübersicht</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,13 +17,9 @@
             margin: 0 auto;
             padding: 20px;
         }
-        .highlight {
-            border: 2px solid #ff9800;
-            background-color: #fff3e0;
-        }
         table {
-            border-collapse: collapse;
             width: 100%;
+            border-collapse: collapse;
             margin-bottom: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             background-color: #fff;
@@ -30,12 +27,14 @@
             overflow: hidden;
         }
         th, td {
-            padding: 15px;
+            border: 1px solid #ddd;
+            padding: 8px;
             text-align: center;
-            border-bottom: 1px solid #ddd;
+            width: 50px;
+            height: 50px;
         }
         th {
-            background-color: #ff5722;
+            background-color: #f2f2f2;
             color: white;
         }
         tr:nth-child(even) {
@@ -43,6 +42,12 @@
         }
         tr:nth-child(odd) {
             background-color: #fff;
+        }
+        .box {
+            background-color: #e0f7fa;
+        }
+        .highlight {
+            background-color: #ffcccc;
         }
         .form-container {
             display: flex;
@@ -125,15 +130,15 @@
     </style>
     <script>
         window.onload = function() {
-            document.getElementById('projektnummer').focus();
+            document.getElementById('project_number').focus();
         };
     </script>
 </head>
 <body>
     <div class="container">
         <div class="form-container">
-            <form action="/find" method="post">
-                <input type="text" id="projektnummer" name="projektnummer" placeholder="Projektnummer">
+            <form action="{{ url_for('search') }}" method="get">
+                <input type="text" id="project_number" name="project_number" placeholder="Projektnummer">
                 <button type="submit">Suchen</button>
             </form>
             <div class="message">{% if message %}{{ message }}{% endif %}</div>
@@ -144,11 +149,11 @@
                 <tr>
                     <th>{{ reihe }}</th>
                     {% for fach in range(10, 0, -1) %}
-                    <td class="{% if highlight and highlight[0] == reihe and highlight[1] == fach %}highlight{% endif %}">
+                    <td class="{% if search_project_number and shelf.project_number == search_project_number %}highlight{% endif %}">
                         <div class="eurobox">
-                            {% for location in storage_locations %}
-                                {% if location[1] == reihe and location[2] == fach %}
-                                    {{ location[0] }}
+                            {% for shelf in shelves %}
+                                {% if shelf.level == reihe and shelf.position == fach %}
+                                    {{ shelf.box_id }}
                                 {% endif %}
                             {% endfor %}
                         </div>
