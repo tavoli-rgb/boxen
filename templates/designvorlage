@@ -2,8 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regalübersicht</title>
+    <title>Kistenverwaltung</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,9 +16,13 @@
             margin: 0 auto;
             padding: 20px;
         }
+        .highlight {
+            border: 2px solid #ff9800;
+            background-color: #fff3e0;
+        }
         table {
-            width: 100%;
             border-collapse: collapse;
+            width: 100%;
             margin-bottom: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             background-color: #fff;
@@ -27,11 +30,9 @@
             overflow: hidden;
         }
         th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            padding: 15px;
             text-align: center;
-            width: 50px;
-            height: 50px;
+            border-bottom: 1px solid #ddd;
         }
         th {
             background-color: #ff5722;
@@ -43,14 +44,16 @@
         tr:nth-child(odd) {
             background-color: #fff;
         }
-        .box {
-            background-color: #e0f7fa;
-        }
-        .highlight {
-            background-color: #ffcccc;
-        }
         .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             margin-bottom: 20px;
+        }
+        .form-container form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
         }
         .form-container input {
             width: 300px;
@@ -102,9 +105,14 @@
             font-size: 1.2em;
             color: #333;
         }
+        td {
+            width: 10%; /* Ensure all boxes are the same width */
+            position: relative;
+        }
         .divider {
             position: absolute;
-            height: 100%;
+            top: 0;
+            bottom: 0;
             width: 2px;
             background-color: #ff5722; /* Same color as the row headers */
             right: 0; /* Position at the right edge of the cell */
@@ -117,15 +125,15 @@
     </style>
     <script>
         window.onload = function() {
-            document.getElementById('project_number').focus();
+            document.getElementById('projektnummer').focus();
         };
     </script>
 </head>
 <body>
     <div class="container">
         <div class="form-container">
-            <form action="{{ url_for('search') }}" method="get">
-                <input type="text" id="project_number" name="project_number" placeholder="Projektnummer">
+            <form action="/find" method="post">
+                <input type="text" id="projektnummer" name="projektnummer" placeholder="Projektnummer">
                 <button type="submit">Suchen</button>
             </form>
             <div class="message">{% if message %}{{ message }}{% endif %}</div>
@@ -136,11 +144,11 @@
                 <tr>
                     <th>{{ reihe }}</th>
                     {% for fach in range(10, 0, -1) %}
-                    <td class="{% for shelf in shelves %}{% if shelf.level == reihe and shelf.position == fach %}{% if search_project_number and shelf.project_number == search_project_number %}highlight{% endif %}{% endif %}{% endfor %}">
+                    <td class="{% if highlight and highlight[0] == reihe and highlight[1] == fach %}highlight{% endif %}">
                         <div class="eurobox">
-                            {% for shelf in shelves %}
-                                {% if shelf.level == reihe and shelf.position == fach %}
-                                    {{ shelf.box_id }}
+                            {% for location in storage_locations %}
+                                {% if location[1] == reihe and location[2] == fach %}
+                                    {{ location[0] }}
                                 {% endif %}
                             {% endfor %}
                         </div>
