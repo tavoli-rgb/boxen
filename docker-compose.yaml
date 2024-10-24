@@ -4,7 +4,7 @@ services:
   db:
     image: mysql:5.7
     volumes:
-      - db_data:/var/lib/mysql
+      - ./mysql_data:/var/lib/mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: example
@@ -19,13 +19,15 @@ services:
       MYSQL_ROOT_PASSWORD: example
 
   web:
-    build: .
+    build: ./web
     volumes:
-      - .:/code
+      - ./web:/code
     ports:
       - 5000:5000
     depends_on:
       - db
+    environment:
+      REPO_URL: https://github.com/tavoli-rgb/boxen.git
 
 volumes:
   db_data:

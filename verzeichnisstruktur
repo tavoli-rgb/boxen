@@ -1,0 +1,7 @@
+project-root/
+├── docker-compose.yml
+├── mysql_data/
+└── web/
+    ├── Dockerfile
+    ├── requirements.txt
+    └── app.py
