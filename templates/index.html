@@ -149,8 +149,8 @@
                 <tr>
                     <th>{{ reihe }}</th>
                     {% for fach in range(10, 0, -1) %}
-                    <td class="{% if search_project_number and shelf.project_number == search_project_number %}highlight{% endif %}">
-                        <div class="eurobox">
+                    <td>
+                        <div class="eurobox {% for shelf in shelves %}{% if shelf.level == reihe and shelf.position == fach %}{% if search_project_number and shelf.project_number == search_project_number %}highlight{% endif %}{% endif %}{% endfor %}">
                             {% for shelf in shelves %}
                                 {% if shelf.level == reihe and shelf.position == fach %}
                                     {{ shelf.box_id }}
