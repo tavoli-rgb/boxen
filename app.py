@@ -6,10 +6,10 @@ app = Flask(__name__)
 
 # Configure MySQL connection
 db_config = {
-    'user': 'your_user',
-    'password': 'your_password',
+    'user': 'root',
+    'password': 'example',
     'host': 'db',  # Ändere 'localhost' zu 'db'
-    'database': 'your_database'
+    'database': 'regalverwaltung',
 }
 
 def get_db_connection():
