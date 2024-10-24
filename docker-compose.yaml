@@ -9,27 +9,28 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: example
     ports:
-      - 3306:3306
+      - 3310:3306
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
     ports:
-      - 8080:80
+      - 8090:80
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: example
 
   web:
-    build: ./web
+    build:
+      context: ./web
+      args:
+        REPO_URL: https://github.com/tavoli-rgb/boxen.git
     volumes:
       - ./web:/code
     ports:
-      - 5000:5000
+      - 5010:5000
     depends_on:
       - db
-    environment:
-      REPO_URL: https://github.com/tavoli-rgb/boxen.git
 
 volumes:
   db_data:
