@@ -23,42 +23,51 @@
             text-align: center;
             width: 90%;
             max-width: 1200px;
+            position: relative;
         }
-        h1 {
-            color: #333;
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            grid-template-rows: repeat(5, 1fr);
-            gap: 10px;
-            margin-top: 20px;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
         }
         .box {
             background-color: #e0f7fa;
-            border: 1px solid #ddd;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            border-radius: 4px;
-        }
-        .box span {
-            font-size: 14px;
-            color: #333;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Regalübersicht</h1>
-        <div class="grid">
+    <h1>Regalübersicht</h1>
+    <form action="{{ url_for('search') }}" method="get">
+        <label for="project_number">Projekt Nummer:</label>
+        <input type="text" id="project_number" name="project_number">
+        <button type="submit">Suchen</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Ebene</th>
+                <th>Fach</th>
+                <th>Box</th>
+                <th>Projekt Nummer</th>
+            </tr>
+        </thead>
+        <tbody>
             {% for shelf in shelves %}
-                <div class="box" style="grid-column: {{ 11 - shelf.position }}; grid-row: {{ 6 - shelf.level }};">
-                    <span>{{ shelf.box_id }}</span>
-                </div>
+                <tr>
+                    <td>{{ shelf.level }}</td>
+                    <td>{{ shelf.position }}</td>
+                    <td class="box">{{ shelf.box_id }}</td>
+                    <td>{{ shelf.project_number }}</td>
+                </tr>
             {% endfor %}
-        </div>
-    </div>
+        </tbody>
+    </table>
 </body>
 </html>
