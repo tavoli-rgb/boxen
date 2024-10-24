@@ -22,7 +22,7 @@ services:
 
   web:
     build:
-      context: ./web
+      context: .
       args:
         REPO_URL: https://github.com/tavoli-rgb/boxen.git
     volumes:
