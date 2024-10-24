@@ -31,6 +31,9 @@ services:
       - 5010:5000
     depends_on:
       - db
+    environment:
+      REPO_URL: https://github.com/tavoli-rgb/boxen.git
+      REPO_BRANCH: main
 
 volumes:
   db_data:
