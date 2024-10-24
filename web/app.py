@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return 'Das ist ein Test!'
 
 if __name__ == '__main__':
     repo_url = os.getenv('REPO_URL')
