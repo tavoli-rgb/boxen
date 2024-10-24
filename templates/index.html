@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regalverwaltung</title>
+    <title>Regalübersicht</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -43,36 +43,33 @@
         th {
             background-color: #f2f2f2;
         }
+        .box {
+            background-color: #e0f7fa;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Regalverwaltung</h1>
-        <form action="/assign" method="post">
-            <label for="project_number">Project Number:</label>
-            <input type="text" id="project_number" name="project_number" required>
-            <button type="submit">Assign</button>
-        </form>
-        <h2>Shelves</h2>
+        <h1>Regalübersicht</h1>
         <table>
-            <tr>
-                <th>Level</th>
-                <th>Position</th>
-                <th>Project Number</th>
-                <th>Action</th>
-            </tr>
-            {% for shelf in shelves %}
-            <tr>
-                <td>{{ shelf.level }}</td>
-                <td>{{ shelf.position }}</td>
-                <td>{{ shelf.project_number or 'Empty' }}</td>
-                <td>
-                    {% if shelf.project_number %}
-                    <a href="/remove/{{ shelf.box_id }}">Remove</a>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
+            <thead>
+                <tr>
+                    <th>Ebene</th>
+                    <th>Fach</th>
+                    <th>Box</th>
+                    <th>Projekt Nummer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for shelf in shelves %}
+                    <tr>
+                        <td>{{ shelf.level }}</td>
+                        <td>{{ shelf.position }}</td>
+                        <td class="box">{{ shelf.box_id }}</td>
+                        <td>{{ shelf.project_number }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
 </body>
