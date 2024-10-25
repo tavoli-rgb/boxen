@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Projects</title>
+    <style>
+        /* Füge hier deine CSS-Stile hinzu */
+    </style>
+    <script>
+        function editEntry(boxId) {
+            // Öffne ein neues Fenster zum Bearbeiten oder Löschen des Eintrags
+            window.location.href = `/edit/${boxId}`;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Neue Projektnummer anlegen</h1>
+        <form action="{{ url_for('add_project') }}" method="post">
+            <input type="text" name="project_number" placeholder="Projektnummer" required>
+            <button type="submit">Anlegen</button>
+        </form>
+        <h2>Zugewiesene Kisten</h2>
+        <ul>
+            {% for box in boxes %}
+            <li onclick="editEntry({{ box.box_id }})">
+                Projektnummer: {{ box.project_number }}, Regalebene: {{ box.level }}, Fach: {{ box.position }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
